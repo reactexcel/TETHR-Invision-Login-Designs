@@ -39,7 +39,7 @@ export class StartPage extends React.Component {
 	          </TouchableNativeFeedback>
 	        </View>
 	      </View>
-	    );
+	    )
   }
 }
 

@@ -16,7 +16,7 @@ import {
 
 import {StartPage} from './app/pages/start';
 import {HomePage} from './app/pages/home';
-import {TourPage} from './app/pages/home';
+import {TourPage} from './app/pages/tour';
 
 let _navigator = false;
 
@@ -37,7 +37,7 @@ class tethr extends Component {
   }
   _renderScene(route,navigator){
     _navigator = navigator;
-    if(route.id == 'start'){
+    if(route.id === 'start'){
       return (
         <StartPage navigator={navigator} />
       );
@@ -54,7 +54,7 @@ class tethr extends Component {
   render() {
    return (
       <Navigator
-        initialRoute={{id:'home'}}
+        initialRoute={{id:'tour'}}
         configureScene={ (route, routeStack) => {
           return Navigator.SceneConfigs.FadeAndroid
         } }

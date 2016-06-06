@@ -34,7 +34,7 @@ export class HomePage extends React.Component {
                     </View>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={ () => {  console.log('add')  }} background={TouchableNativeFeedback.SelectableBackground()}>
+                  <TouchableOpacity onPress={ () => {  this.props.navigator.push({id: 'tour'})  }} background={TouchableNativeFeedback.SelectableBackground()}>
                     <View style={styles.transparent_button}>
                       <View style={styles.align_text, {width: width * .4}}>
                         <Text style={styles.green_button_text}>TAKE THE TOUR</Text>
@@ -46,7 +46,7 @@ export class HomePage extends React.Component {
             </View>
             
           </Image>
-	    );
+	    )
   }
 }
 
