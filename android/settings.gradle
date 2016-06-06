@@ -1,0 +1,3 @@
+rootProject.name = 'tethr'
+
+include ':app'
