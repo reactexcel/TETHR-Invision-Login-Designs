@@ -21,7 +21,7 @@ export class StartPage extends React.Component {
 	    var {height, width} = Dimensions.get('window');
 	    return (
 	      <View style={styles.container}>
-	        <TouchableNativeFeedback onPress={ () => {  console.log('add')  }} background={TouchableNativeFeedback.SelectableBackground()}>
+	        <TouchableNativeFeedback onPress={ () => {    }} background={TouchableNativeFeedback.SelectableBackground()}>
 	          <View style={styles.signup_feedback}>
 	            <Text style={styles.signup}>
 	              SIGN UP
@@ -32,7 +32,7 @@ export class StartPage extends React.Component {
 	          <Image style={{width: 100,height:100}} source={require('./../../images/splash-logo.png')}></Image>
 	        </View>
 	        <View style={styles.next,{  height: height*.2  }}>
-	          <TouchableNativeFeedback onPress={ () => {  console.log('add')  }} background={TouchableNativeFeedback.SelectableBackground()}>
+	          <TouchableNativeFeedback onPress={ () => {  this.props.navigator.push({id: 'home'})  }} background={TouchableNativeFeedback.SelectableBackground()}>
 	            <View style={{padding: 10}}>
 	              <Icon iconStyle={{textAlign: 'center'}} onPress={ () => {}} color={'#333'} backgroundColor={'#f3f3f3'} size={30} name="arrow-forward"></Icon>
 	            </View>
@@ -41,6 +41,10 @@ export class StartPage extends React.Component {
 	      </View>
 	    );
   }
+}
+
+StartPage.propTypes = {
+  navigator: React.PropTypes.any.isRequired
 }
 
 const styles = StyleSheet.create({
