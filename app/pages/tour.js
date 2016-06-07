@@ -11,29 +11,46 @@ import {
   Slider
 } from 'react-native';
 
-import Carousel from 'react-native-looped-carousel'
+import Carousel from 'react-native-carousel'
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 var {width, height} = Dimensions.get('window');
 
+import {TourSlide} from './tour/slide'
+
+import {map} from 'lodash'
+
 export class TourPage extends React.Component {
 	constructor(props){
 		super(props);
     this.state = {
-      size: {
-          width: width *. 8,
-          height: height *. 8
-      } 
+      tour: [{
+        heading: 'Slide1',
+        text: 'Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc'
+      },{
+        heading: 'Slide2',
+        text: 'Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc'
+      },{
+        heading: 'Slide3',
+        text: 'Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc'
+      }]
     }
-    this._onLayoutDidChange = this._onLayoutDidChange.bind(this);
+    this._generateSlides = this._generateSlides.bind(this);
 	}
-   _onLayoutDidChange(e) {
-    var layout = e.nativeEvent.layout;
-    this.setState({size: {width: layout.width, height: layout.height}});
+  _generateSlides(){
+    let slides = [];
+    slides = map(this.state.tour,(slide) => {
+      return (
+         <TourSlide heading={slide.heading} text={slide.text} />
+      )
+    })
+    return slides;
   }
 	render() {
 	    var {height, width} = Dimensions.get('window');
+      let slides = this._generateSlides();
+
 	    return (
             <Image style={{width: null,height:null}} source={require('./../../images/bg.png')}>
               <View style={[styles.overlay, { height: height, width: width}]} />
@@ -48,41 +65,12 @@ export class TourPage extends React.Component {
                     backgroundColor: '#fff',
                     borderRadius: 5,
                     flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center'}}>
+                    justifyContent: 'center'}}>
 
-                       <View style={{flex: 1}} onLayout={this._onLayoutDidChange}>
-                        <Carousel delay={500} style={this.state.size}>
-                            <View style={this.state.size}>
-                                   
-                                   <Image style={{width: 100,height: 100}} source={require('./../../images/tour-tick.png')}/>
-                      
-                                   <Text style={styles.title}>SLIDE1</Text>
-
-                                   <Text style={styles.text}>Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc </Text>
-
-                            </View>
-                            
-                            <View style={this.state.size}>
-                                  <Image style={{width: 100,height: 100}} source={require('./../../images/tour-tick.png')}/>
-                      
-                                   <Text style={styles.title}>SLIDE2</Text>
-
-                                   <Text style={styles.text}>Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc </Text>
-
-                            </View>
-                            <View style={this.state.size}>
-                                <Image style={{width: 100,height: 100}} source={require('./../../images/tour-tick.png')}/>
-                      
-                                   <Text style={styles.title}>SLIDE3</Text>
-
-                                   <Text style={styles.text}>Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc Abc </Text>
-
-                            </View>
+                        <Carousel indicatorColor="#22c064" indicatorOffset={0}  hideIndicators={false} indicatorAtBottom={true} loop={false} animate={false} width={width * .9}>
+                            {slides}
                         </Carousel>
-                      </View>
-                     
-                     
+                      
                   </View>
               </View>
             </Image>
@@ -110,11 +98,27 @@ const styles = StyleSheet.create({
     backgroundColor: 'black'
   },
   title : {
-      fontSize: 50,
-      color: '#333'
+      fontSize: 30,
+      color: '#333',
+      textAlign: 'center',
+      margin: 40
+  },
+  image : {
+    width: 100,
+    height: 100,
   },
   text: {
-      fontSize: 30,
-      color: '#333'
+      fontSize: 15,
+      color: '#333',
+      textAlign: 'center',
+      padding: 20,
+      marginLeft: 40,
+      marginRight: 40
+  },
+  page: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
   }
 });
