@@ -27,8 +27,8 @@ export class TourSlide extends React.Component {
 }
 
 TourSlide.propTypes = {
-  heading: React.PropTypes.string.isRequire,
-  text: React.PropTypes.string.isRequire
+  heading: React.PropTypes.string.isRequired,
+  text: React.PropTypes.string.isRequired
 }
 
 const styles = StyleSheet.create({

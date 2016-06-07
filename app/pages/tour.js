@@ -40,10 +40,12 @@ export class TourPage extends React.Component {
 	}
   _generateSlides(){
     let slides = [];
+    let i = 0;
     slides = map(this.state.tour,(slide) => {
       return (
-         <TourSlide heading={slide.heading} text={slide.text} />
+         <TourSlide key={i} heading={slide.heading} text={slide.text} />
       )
+      i++;
     })
     return slides;
   }
@@ -66,6 +68,12 @@ export class TourPage extends React.Component {
                     borderRadius: 5,
                     flex: 1,
                     justifyContent: 'center'}}>
+
+                        <TouchableOpacity onPress={ () => {  this.props.navigator.pop()  }}>
+                          <View style={styles.cross}>
+                            <Icon size={30} name="close"></Icon>
+                          </View>
+                        </TouchableOpacity>
 
                         <Carousel indicatorColor="#22c064" indicatorOffset={0}  hideIndicators={false} indicatorAtBottom={true} loop={false} animate={false} width={width * .9}>
                             {slides}
@@ -97,28 +105,8 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     backgroundColor: 'black'
   },
-  title : {
-      fontSize: 30,
-      color: '#333',
-      textAlign: 'center',
-      margin: 40
-  },
-  image : {
-    width: 100,
-    height: 100,
-  },
-  text: {
-      fontSize: 15,
-      color: '#333',
-      textAlign: 'center',
-      padding: 20,
-      marginLeft: 40,
-      marginRight: 40
-  },
-  page: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column'
+  cross: {
+    alignSelf: 'flex-end',
+    padding: 20
   }
 });

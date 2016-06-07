@@ -17,6 +17,7 @@ import {
 import {StartPage} from './app/pages/start';
 import {HomePage} from './app/pages/home';
 import {TourPage} from './app/pages/tour';
+import {SignupPage} from './app/pages/signup';
 
 let _navigator = false;
 
@@ -28,7 +29,25 @@ BackAndroid.addEventListener('hardwareBackPress', function() {
    return false;
 });
 
-
+// var NavigationBarRouteMapper = { 
+//   LeftButton: function( route, navigator, index, navState ){
+//     if(route.id === 'signup'){
+//       return(
+//           <Text>Bck</Text> 
+//       )
+//     }
+//   },
+//   Title: function( route, navigator, index, navState ){
+//     if(route.id === 'signup'){
+//       return(
+//           <Text>Sign Up</Text> 
+//       )
+//     }
+//   },
+//   RightButton: function( route, navigator, index, navState ){
+//     return null
+//   }
+// }
 
 class tethr extends Component {
   constructor(props){
@@ -40,7 +59,7 @@ class tethr extends Component {
     if(route.id === 'start'){
       return (
         <StartPage navigator={navigator} />
-      );
+      )
     }else if(route.id === 'home'){
       return (
         <HomePage navigator={navigator} />
@@ -49,14 +68,18 @@ class tethr extends Component {
       return (
         <TourPage navigator={navigator} />
       )
+    }else if(route.id === 'signup'){
+      return (
+        <SignupPage navigator={navigator} /> 
+      )
     }
   }
   render() {
    return (
       <Navigator
-        initialRoute={{id:'tour'}}
+        initialRoute={{id:'start'}}
         configureScene={ (route, routeStack) => {
-          return Navigator.SceneConfigs.FadeAndroid
+          return Navigator.SceneConfigs.HorizontalSwipeJump
         } }
         renderScene={this._renderScene}>
       </Navigator>

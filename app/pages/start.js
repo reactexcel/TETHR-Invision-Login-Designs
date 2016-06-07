@@ -21,7 +21,7 @@ export class StartPage extends React.Component {
 	    var {height, width} = Dimensions.get('window');
 	    return (
 	      <View style={styles.container}>
-	        <TouchableNativeFeedback onPress={ () => {    }} background={TouchableNativeFeedback.SelectableBackground()}>
+	        <TouchableNativeFeedback onPress={ () => {  this.props.navigator.push({id: 'signup'}) }} background={TouchableNativeFeedback.SelectableBackground()}>
 	          <View style={styles.signup_feedback}>
 	            <Text style={styles.signup}>
 	              SIGN UP
