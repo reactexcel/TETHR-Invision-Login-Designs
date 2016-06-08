@@ -18,6 +18,7 @@ import {StartPage} from './app/pages/start';
 import {HomePage} from './app/pages/home';
 import {TourPage} from './app/pages/tour';
 import {SignupPage} from './app/pages/signup';
+import {ProductPage} from './app/pages/product'
 
 let _navigator = false;
 
@@ -72,14 +73,22 @@ class tethr extends Component {
       return (
         <SignupPage navigator={navigator} /> 
       )
+    }else if(route.id === 'product'){
+      return (
+        <ProductPage navigator={navigator} />
+      )
     }
   }
   render() {
    return (
       <Navigator
-        initialRoute={{id:'start'}}
+        initialRoute={{id:'product'}}
         configureScene={ (route, routeStack) => {
-          return Navigator.SceneConfigs.HorizontalSwipeJump
+          if(route.id === 'product'){
+            return false;
+          }else{
+            return Navigator.SceneConfigs.HorizontalSwipeJump
+          }
         } }
         renderScene={this._renderScene}>
       </Navigator>
