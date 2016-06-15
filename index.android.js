@@ -82,7 +82,7 @@ class tethr extends Component {
   render() {
    return (
       <Navigator
-        initialRoute={{id:'product'}}
+        initialRoute={{id:'signup'}}
         configureScene={ (route, routeStack) => {
           if(route.id === 'product'){
             return false;

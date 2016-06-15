@@ -12,6 +12,7 @@ import {
   TextInput
 } from 'react-native';
 
+import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -28,7 +29,36 @@ export class SignupPage extends React.Component {
         focus_email: false,
         focus_password: false
       }
+    this.googleLogin = this.googleLogin.bind(this);
 	}
+  googleLogin(){
+    GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
+        // play services are available. can now configure library
+        GoogleSignin.configure({
+        })
+        .then(() => {
+            // you can now call currentUserAsync()
+            console.log('here');
+            GoogleSignin.currentUserAsync().then((user) => {
+              console.log('USER', user);
+              if(user){
+                this.setState({user: user});
+              }else{
+                  console.log('user not found');
+                  GoogleSignin.signIn()
+                    .then((user) => {
+                      console.log(user);
+                      this.setState({user: user});
+                    })
+                    .catch((err) => {
+                      console.log('WRONG SIGNIN', err);
+                    })
+                    .done();
+              }
+            }).done();
+        });
+    })
+  }
 	render() {
 	    var {height, width} = Dimensions.get('window');
 
@@ -102,6 +132,13 @@ export class SignupPage extends React.Component {
                           </View>
                         </View>
                       </TouchableOpacity>
+                      <TouchableOpacity onPress={this.googleLogin} background={TouchableNativeFeedback.SelectableBackground()}>
+                        <View style={styles.rounded_blue}>
+                          <View style={[styles.align_text_red,{width: width * .75}]}>
+                            <Text style={styles.google_text}>SIGN UP VIA GOOGLE</Text>
+                          </View>
+                        </View>
+                      </TouchableOpacity>
 
               </View>
               <View style={styles.container_end}>
@@ -148,6 +185,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'center',
+    margin: 5
   },
   align_text: {
     padding: 20,
@@ -156,10 +194,22 @@ const styles = StyleSheet.create({
     borderColor: '#4b77da',
     borderRadius: 30
   },
+  align_text_red: {
+    padding: 20,
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: '#dd4b39',
+    borderRadius: 30
+  },
   facebook_text : {
     fontSize: 15,
     textAlign: 'center',
     color: '#4b77da'
+  },
+  google_text : {
+    fontSize: 15,
+    textAlign: 'center',
+    color: '#dd4b39'
   },
   container_end: {
     flex: .2,

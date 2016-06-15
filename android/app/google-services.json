@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "337799473499",
+    "project_id": "readnativetether"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337799473499:android:914374f876546be2",
+        "android_client_info": {
+          "package_name": "com.tethr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337799473499-hfv3qcfr8nprit5uvv82f5haqdto7s0b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tethr",
+            "certificate_hash": "CBE9E05AC472766C8546F95616FC3AA4EE54520E"
+          }
+        },
+        {
+          "client_id": "337799473499-kmfljhbteife90pckqn8e7e6chuv16s0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJKnni_OYfaQSWf2OlO0iMC-UuCtYfRFg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
