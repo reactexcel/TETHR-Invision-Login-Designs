@@ -17,8 +17,14 @@ import {
 import {StartPage} from './app/pages/start';
 import {HomePage} from './app/pages/home';
 import {TourPage} from './app/pages/tour';
-import {SignupPage} from './app/pages/signup';
+import SignupContainer from './app/containers/signup';
 import {ProductPage} from './app/pages/product'
+
+
+import { Provider } from 'react-redux'
+
+import store from './app/store/index'
+
 
 let _navigator = false;
 
@@ -30,25 +36,6 @@ BackAndroid.addEventListener('hardwareBackPress', function() {
    return false;
 });
 
-// var NavigationBarRouteMapper = { 
-//   LeftButton: function( route, navigator, index, navState ){
-//     if(route.id === 'signup'){
-//       return(
-//           <Text>Bck</Text> 
-//       )
-//     }
-//   },
-//   Title: function( route, navigator, index, navState ){
-//     if(route.id === 'signup'){
-//       return(
-//           <Text>Sign Up</Text> 
-//       )
-//     }
-//   },
-//   RightButton: function( route, navigator, index, navState ){
-//     return null
-//   }
-// }
 
 class tethr extends Component {
   constructor(props){
@@ -71,7 +58,7 @@ class tethr extends Component {
       )
     }else if(route.id === 'signup'){
       return (
-        <SignupPage navigator={navigator} /> 
+        <SignupContainer navigator={navigator} /> 
       )
     }else if(route.id === 'product'){
       return (
@@ -81,6 +68,7 @@ class tethr extends Component {
   }
   render() {
    return (
+     <Provider store={store}>
       <Navigator
         initialRoute={{id:'signup'}}
         configureScene={ (route, routeStack) => {
@@ -92,6 +80,7 @@ class tethr extends Component {
         } }
         renderScene={this._renderScene}>
       </Navigator>
+    </Provider>
    )
   }
 }

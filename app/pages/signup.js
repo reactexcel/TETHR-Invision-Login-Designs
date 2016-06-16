@@ -9,15 +9,14 @@ import {
   Dimensions,
   TouchableOpacity,
   ToolbarAndroid,
-  TextInput
+  TextInput,
+  ProgressBarAndroid
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
-var {width, height} = Dimensions.get('window');
-
 
 export class SignupPage extends React.Component {
 	constructor(props){
@@ -30,38 +29,58 @@ export class SignupPage extends React.Component {
         focus_password: false
       }
     this.googleLogin = this.googleLogin.bind(this);
+    this._renderGoogle = this._renderGoogle.bind(this);
+    this._renderProgress = this._renderProgress.bind(this);
+    this._renderFacebook = this._renderFacebook.bind(this);
 	}
   googleLogin(){
-    GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
-        // play services are available. can now configure library
-        GoogleSignin.configure({
-        })
-        .then(() => {
-            // you can now call currentUserAsync()
-            console.log('here');
-            GoogleSignin.currentUserAsync().then((user) => {
-              console.log('USER', user);
-              if(user){
-                this.setState({user: user});
-              }else{
-                  console.log('user not found');
-                  GoogleSignin.signIn()
-                    .then((user) => {
-                      console.log(user);
-                      this.setState({user: user});
-                    })
-                    .catch((err) => {
-                      console.log('WRONG SIGNIN', err);
-                    })
-                    .done();
-              }
-            }).done();
-        });
-    })
+     this.props.googleSignup()
+  }
+  _renderProgress(){
+    if(this.props.login_user.login_request){
+      return (
+        <View style={styles.container}>
+             <ProgressBarAndroid styleAttr="Inverse" />
+        </View>
+      )
+    }else{
+      return null
+    }
+  }
+  _renderFacebook(){
+    var {height, width} = Dimensions.get('window');
+    if(!this.props.login_user.login_request){
+      return (
+        <TouchableOpacity onPress={ () => {  console.log('add')  }} background={TouchableNativeFeedback.SelectableBackground()}>
+          <View style={styles.rounded_blue}>
+            <View style={[styles.align_text,{width: width * .75}]}>
+              <Text style={styles.facebook_text}>SIGN UP VIA FACEBOOK</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      )
+    }else{
+      return null
+    }
+  }
+  _renderGoogle(){
+    var {height, width} = Dimensions.get('window');
+    if(!this.props.login_user.login_request){
+      return (
+        <TouchableOpacity onPress={this.googleLogin} background={TouchableNativeFeedback.SelectableBackground()}>
+          <View style={styles.rounded_blue}>
+            <View style={[styles.align_text_red,{width: width * .75}]}>
+              <Text style={styles.google_text}>SIGN UP VIA GOOGLE</Text>
+            </View>
+          </View>
+        </TouchableOpacity> 
+      )
+    }else{
+      return null
+    }
   }
 	render() {
-	    var {height, width} = Dimensions.get('window');
-
+      var {height, width} = Dimensions.get('window');
 	    return (
           <View style={{flex: 1}}>
               <Icon.ToolbarAndroid
@@ -76,7 +95,7 @@ export class SignupPage extends React.Component {
                 titleColor={"#333"}
                 action={[]}>
               </Icon.ToolbarAndroid>
-              <View style={[styles.container,{width: width * .95, paddingLeft: width * .05}]}>
+                  <View style={[styles.container,{width: width * .95, paddingLeft: width * .05}]}>
 
                       <View style={styles.logo}>
                           <Image style={{width: 100,height:100}} source={require('./../../images/splash-logo.png')}></Image>
@@ -125,20 +144,9 @@ export class SignupPage extends React.Component {
                         value={this.state.password}>
                         </TextInput>
                       </View>
-                      <TouchableOpacity onPress={ () => {  console.log('add')  }} background={TouchableNativeFeedback.SelectableBackground()}>
-                        <View style={styles.rounded_blue}>
-                          <View style={[styles.align_text,{width: width * .75}]}>
-                            <Text style={styles.facebook_text}>SIGN UP VIA FACEBOOK</Text>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={this.googleLogin} background={TouchableNativeFeedback.SelectableBackground()}>
-                        <View style={styles.rounded_blue}>
-                          <View style={[styles.align_text_red,{width: width * .75}]}>
-                            <Text style={styles.google_text}>SIGN UP VIA GOOGLE</Text>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
+                      {this._renderProgress()}
+                      {this._renderFacebook()}
+                      {this._renderGoogle()}
 
               </View>
               <View style={styles.container_end}>
@@ -150,13 +158,15 @@ export class SignupPage extends React.Component {
                     </View>
                   </TouchableOpacity>
               </View>
-          </View>   
+            </View>
 	    )
   }
 }
 
 SignupPage.propTypes = {
-  navigator: React.PropTypes.any.isRequired
+  navigator: React.PropTypes.any.isRequired,
+  googleSignup : React.PropTypes.func.isRequired,
+  login_user: React.PropTypes.any.isRequired
 }
 
 const styles = StyleSheet.create({
