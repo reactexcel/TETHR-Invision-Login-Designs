@@ -6,16 +6,18 @@ import createLogger from 'redux-logger';
 import thunk from 'redux-thunk'
 import * as actions from './../actions/index'
 
-const logger = createLogger();
+const logger = createLogger({
+	stateTransformer : (state) => {
+		return state.toJS()
+	}
+});
 
 let store = createStore(reducer, applyMiddleware(thunk,logger));
 
 //to some basic tests to see if our reducers are working
-store.dispatch(actions.loginTodo()).then( () => {
+// store.dispatch(actions.loginTodo()).then( () => {
 
-
-
-});
+// });
 
 
 export default store;

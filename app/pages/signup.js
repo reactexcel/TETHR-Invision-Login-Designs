@@ -10,7 +10,8 @@ import {
   TouchableOpacity,
   ToolbarAndroid,
   TextInput,
-  ProgressBarAndroid
+  ProgressBarAndroid,
+  ToastAndroid
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -32,7 +33,13 @@ export class SignupPage extends React.Component {
     this._renderGoogle = this._renderGoogle.bind(this);
     this._renderProgress = this._renderProgress.bind(this);
     this._renderFacebook = this._renderFacebook.bind(this);
+    
 	}
+  componentWillReceiveProps(props){
+    if(props.login_user && props.login_user.login_data && props.login_user.login_data.name){
+      props.navigator.resetTo({id: 'product'})
+    }
+  }
   googleLogin(){
      this.props.googleSignup()
   }
@@ -81,6 +88,9 @@ export class SignupPage extends React.Component {
   }
 	render() {
       var {height, width} = Dimensions.get('window');
+      if(this.props.login_user && this.props.login_user.login_data && this.props.login_user.login_data.name){
+          ToastAndroid.show('Welcome ' + this.props.login_user.login_data.name,ToastAndroid.SHORT);
+      }
 	    return (
           <View style={{flex: 1}}>
               <Icon.ToolbarAndroid

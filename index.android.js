@@ -10,7 +10,8 @@ import {
   Text,
   View,
   Navigator,
-  BackAndroid
+  BackAndroid,
+  AsyncStorage
 } from 'react-native';
 
 
@@ -24,7 +25,7 @@ import {ProductPage} from './app/pages/product'
 import { Provider } from 'react-redux'
 
 import store from './app/store/index'
-
+import * as actions from './app/actions/index'
 
 let _navigator = false;
 
@@ -41,6 +42,15 @@ class tethr extends Component {
   constructor(props){
     super(props);
     this._renderScene = this._renderScene.bind(this);
+    
+    let state = store.getState().toJS();
+    
+    this.state = {
+      initRoute : {
+        id: 'signup'
+      }
+    }
+    
   }
   _renderScene(route,navigator){
     _navigator = navigator;
@@ -70,7 +80,7 @@ class tethr extends Component {
    return (
      <Provider store={store}>
       <Navigator
-        initialRoute={{id:'signup'}}
+        initialRoute={this.state.initRoute}
         configureScene={ (route, routeStack) => {
           if(route.id === 'product'){
             return false;
@@ -87,6 +97,24 @@ class tethr extends Component {
 
 const styles = StyleSheet.create({
   
+});
+
+
+
+store.subscribe(()=>{
+   let state = store.getState().toJS();
+   if(state.login && state.login.login_data && state.login.login_data.id){
+     console.log('to local storage');
+     console.log(state.login.login_data);
+     AsyncStorage.setItem('login',JSON.stringify(state.login.login_data));
+   }
+  
+})
+
+AsyncStorage.getItem('login', (err,login) => {
+  console.log('from local storage');
+  console.log(login);
+  store.dispatch(actions.loginTodoSuccess(JSON.parse(login)));
 });
 
 AppRegistry.registerComponent('tethr', () => tethr);
