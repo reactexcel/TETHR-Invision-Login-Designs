@@ -16,6 +16,7 @@ import {
 import { connect } from 'react-redux';
 
 import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
+import {LoginManager} from 'react-native-fbsdk'
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -30,6 +31,7 @@ export class SignupPage extends React.Component {
         focus_password: false
       }
     this.googleLogin = this.googleLogin.bind(this);
+    this.facebookLogin = this.facebookLogin.bind(this);
     this._renderGoogle = this._renderGoogle.bind(this);
     this._renderProgress = this._renderProgress.bind(this);
     this._renderFacebook = this._renderFacebook.bind(this);
@@ -37,11 +39,30 @@ export class SignupPage extends React.Component {
 	}
   componentWillReceiveProps(props){
     if(props.login_user && props.login_user.login_data && props.login_user.login_data.name){
-      props.navigator.resetTo({id: 'product'})
+      //props.navigator.resetTo({id: 'product'})
     }
   }
   googleLogin(){
      this.props.googleSignup()
+  }
+  facebookLogin(){
+      /**
+        this needs to be converted to redux like google login.
+        but not doing it since this is not a live project
+      **/
+      LoginManager.logInWithReadPermissions(['public_profile']).then(
+        function(result) {
+          if (result.isCancelled) {
+            alert('Login cancelled');
+          } else {
+            alert('Login success with permissions: '
+              +result.grantedPermissions.toString());
+          }
+        },
+        function(error) {
+          alert('Login fail with error: ' + error);
+        }
+      );
   }
   _renderProgress(){
     if(this.props.login_user.login_request){
@@ -58,7 +79,7 @@ export class SignupPage extends React.Component {
     var {height, width} = Dimensions.get('window');
     if(!this.props.login_user.login_request){
       return (
-        <TouchableOpacity onPress={ () => {  console.log('add')  }} background={TouchableNativeFeedback.SelectableBackground()}>
+        <TouchableOpacity onPress={this.facebookLogin} background={TouchableNativeFeedback.SelectableBackground()}>
           <View style={styles.rounded_blue}>
             <View style={[styles.align_text,{width: width * .75}]}>
               <Text style={styles.facebook_text}>SIGN UP VIA FACEBOOK</Text>

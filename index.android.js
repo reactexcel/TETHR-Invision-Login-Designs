@@ -21,6 +21,7 @@ import {TourPage} from './app/pages/tour';
 import SignupContainer from './app/containers/signup';
 import {ProductPage} from './app/pages/product'
 
+import BaseStyle from './app/styles/base'
 
 import { Provider } from 'react-redux'
 
@@ -56,23 +57,23 @@ class tethr extends Component {
     _navigator = navigator;
     if(route.id === 'start'){
       return (
-        <StartPage navigator={navigator} />
+        <StartPage baseStyle={BaseStyle} navigator={navigator} />
       )
     }else if(route.id === 'home'){
       return (
-        <HomePage navigator={navigator} />
+        <HomePage baseStyle={BaseStyle} navigator={navigator} />
       )
     }else if(route.id === 'tour'){
       return (
-        <TourPage navigator={navigator} />
+        <TourPage baseStyle={BaseStyle} navigator={navigator} />
       )
     }else if(route.id === 'signup'){
       return (
-        <SignupContainer navigator={navigator} /> 
+        <SignupContainer baseStyle={BaseStyle} navigator={navigator} /> 
       )
     }else if(route.id === 'product'){
       return (
-        <ProductPage navigator={navigator} />
+        <ProductPage baseStyle={BaseStyle} navigator={navigator} />
       )
     }
   }
