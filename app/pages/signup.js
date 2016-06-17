@@ -16,7 +16,7 @@ import {
 import { connect } from 'react-redux';
 
 import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
-import {LoginManager} from 'react-native-fbsdk'
+import {LoginManager , GraphRequest , GraphRequestManager} from 'react-native-fbsdk'
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -57,6 +57,25 @@ export class SignupPage extends React.Component {
           } else {
             alert('Login success with permissions: '
               +result.grantedPermissions.toString());
+
+            
+            
+
+            // Create a graph request asking for user information with a callback to handle the response.
+            const infoRequest = new GraphRequest(
+              '/me',
+              null,
+              (error, result) => {
+                  if (error) {
+                    alert('Error fetching data: ' + error.toString());
+                  } else {
+                    alert('Success fetching data: ' + result.toString());
+                  }
+                }
+            );
+            // Start the graph request.
+            new GraphRequestManager().addRequest(infoRequest).start();
+
           }
         },
         function(error) {
