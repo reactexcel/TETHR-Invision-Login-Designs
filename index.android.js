@@ -14,12 +14,15 @@ import {
   AsyncStorage
 } from 'react-native';
 
+import PushNotification from 'react-native-push-notification'
+
 
 import {StartPage} from './app/pages/start';
 import {HomePage} from './app/pages/home';
 import {TourPage} from './app/pages/tour';
 import SignupContainer from './app/containers/signup';
 import {ProductPage} from './app/pages/product'
+import {CategoryPage} from './app/pages/category'
 
 import BaseStyle from './app/styles/base'
 
@@ -48,10 +51,47 @@ class tethr extends Component {
     
     this.state = {
       initRoute : {
-        id: 'signup'
+        id: 'category'
       }
     }
     
+  }
+  componentWillMount(){
+    PushNotification.configure({
+
+        // (optional) Called when Token is generated (iOS and Android)
+        onRegister: function(token) {
+            console.log( 'TOKEN:', token );
+        },
+
+        // (required) Called when a remote or local notification is opened or received
+        onNotification: function(notification) {
+            console.log( 'NOTIFICATION:', notification );
+
+            //need to dispatch action here to integrate with redux
+        },
+
+        // ANDROID ONLY: (optional) GCM Sender ID.
+        senderID: "337799473499",
+
+        // IOS ONLY (optional): default: all - Permissions to register.
+        permissions: {
+            alert: true,
+            badge: true,
+            sound: true
+        },
+
+        // Should the initial notification be popped automatically
+        // default: true
+        popInitialNotification: true,
+
+        /**
+          * IOS ONLY: (optional) default: true
+          * - Specified if permissions will requested or not,
+          * - if not, you must call PushNotificationsHandler.requestPermissions() later
+          */
+        requestPermissions: true,
+    });
   }
   _renderScene(route,navigator){
     _navigator = navigator;
@@ -74,6 +114,10 @@ class tethr extends Component {
     }else if(route.id === 'product'){
       return (
         <ProductPage baseStyle={BaseStyle} navigator={navigator} />
+      )
+    }else if(route.id === 'category'){
+      return (
+        <CategoryPage baseStyle={BaseStyle} navigator={navigator} />
       )
     }
   }

@@ -18,10 +18,11 @@ import java.util.List;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 
 import com.facebook.appevents.AppEventsLogger;     // <--- import
-
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 
 public class MainActivity extends ReactActivity {
     CallbackManager mCallbackManager;
+    private ReactNativePushNotificationPackage mReactNativePushNotificationPackage;
     /**
      * Returns the name of the main component registered from JavaScript.
      * This is used to schedule rendering of the component.
@@ -46,12 +47,14 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected List<ReactPackage> getPackages() {
+        mReactNativePushNotificationPackage = new ReactNativePushNotificationPackage(this);
         mCallbackManager = new CallbackManager.Factory().create();
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
             new VectorIconsPackage(),
             new RNGoogleSigninPackage(),
-                new FBSDKPackage(mCallbackManager)
+                new FBSDKPackage(mCallbackManager),
+                mReactNativePushNotificationPackage
         );
     }
     @Override
@@ -82,5 +85,13 @@ public class MainActivity extends ReactActivity {
     protected void onStop() {
         super.onStop();
         AppEventsLogger.onContextStop();
+    }
+
+    // Add onNewIntent
+    @Override
+    protected void onNewIntent (Intent intent) {
+        super.onNewIntent(intent);
+
+        mReactNativePushNotificationPackage.newIntent(intent);
     }
 }

@@ -129,6 +129,7 @@ dependencies {
     compile project(":react-native-google-signin")
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile project(":react-native-fbsdk")
+    compile project(':react-native-push-notification')
 }
 
 // Run this once to be able to run the application with BUCK
