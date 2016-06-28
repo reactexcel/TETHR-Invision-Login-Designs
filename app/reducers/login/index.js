@@ -1,11 +1,11 @@
 
-import {LOGIN_TODO_REQUEST,LOGIN_TODO_SUCCESS,LOGIN_TODO_ERROR} from './../../actions/index' 
+import {LOGIN_TODO_REQUEST,LOGIN_TODO_SUCCESS,LOGIN_TODO_ERROR} from './../../actions/login/index' 
 import Immutable from 'immutable';
 
-export function login(state = Immutable.Map({
+export function login(state = Immutable.fromJS({
   login_request: false,
   login_error : '',
-  login_data : Immutable.Map({})
+  login_data : {}
 }),action){
   if(action.type === LOGIN_TODO_REQUEST){
   	 return state.set('login_request',true)

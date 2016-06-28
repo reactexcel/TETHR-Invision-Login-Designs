@@ -153,6 +153,7 @@
     <orderEntry type="library" exported="" name="play-services-basement-8.4.0" level="project" />
     <orderEntry type="module" module-name="react-native-push-notification" exported="" />
     <orderEntry type="module" module-name="react-native-fbsdk" exported="" />
+    <orderEntry type="module" module-name="react-native-device-info" exported="" />
     <orderEntry type="module" module-name="react-native-vector-icons" exported="" />
     <orderEntry type="module" module-name="react-native-google-signin" exported="" />
   </component>

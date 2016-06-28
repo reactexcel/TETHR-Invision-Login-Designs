@@ -4,6 +4,7 @@
  */
 
 import React, { Component } from 'react';
+
 import {
   AppRegistry,
   StyleSheet,
@@ -23,6 +24,7 @@ import {TourPage} from './app/pages/tour';
 import SignupContainer from './app/containers/signup';
 import {ProductPage} from './app/pages/product'
 import {CategoryPage} from './app/pages/category'
+import LoginContainer from './app/containers/login'
 
 import BaseStyle from './app/styles/base'
 
@@ -51,7 +53,7 @@ class tethr extends Component {
     
     this.state = {
       initRoute : {
-        id: 'category'
+        id: 'login'
       }
     }
     
@@ -118,6 +120,10 @@ class tethr extends Component {
     }else if(route.id === 'category'){
       return (
         <CategoryPage baseStyle={BaseStyle} navigator={navigator} />
+      )
+    }else if(route.id === 'login'){
+      return (
+        <LoginContainer baseStyle={BaseStyle} navigator={navigator} />
       )
     }
   }

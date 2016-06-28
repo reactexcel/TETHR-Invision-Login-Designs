@@ -5,6 +5,9 @@ export const LOGIN_TODO_REQUEST = "LOGIN_TODO_REQUEST";
 export const LOGIN_TODO_SUCCESS = "LOGIN_TODO_SUCCESS";
 export const LOGIN_TODO_ERROR = "LOGIN_TODO_ERROR";
 
+export const SIGNUP_PAGE_AJAX = "SIGNUP_AJAX";
+export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
+export const SIGNUP_ERROR = "SIGNUP_ERROR";
 
 
 export function loginTodoRequest(){

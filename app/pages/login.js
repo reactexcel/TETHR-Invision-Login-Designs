@@ -23,11 +23,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {notify} from '../services/index'
 
-export class SignupPage extends React.Component {
+export class LoginPage extends React.Component {
 	constructor(props){
 		super(props);
     this.state = {
-        name : '',
         email: '',
         password: '',
         focus_email: false,
@@ -42,30 +41,14 @@ export class SignupPage extends React.Component {
     
 	}
   componentWillReceiveProps(props){
-    if(props.login_user && props.login_user.login_data && props.login_user.login_data.name){
-      //props.navigator.resetTo({id: 'product'})
-    }
-    if(props.ui.signup_page.signup.error){
-      notify(props.ui.signup_page.signup.error)
-      this.state = {
-        name : '',
-        email: '',
-        password: '',
-        focus_email: false,
-        focus_password: false
-      }
-    }
+    
   }
   onRegister(){
-        let name = this.state.name;
-        let email = this.state.email;
-        let password = this.state.password;
-        let firstname = _.head(_.words(name));
-        let lastname = _.tail(_.words(name))
-        this.props.onRegister(firstname,lastname,email,password).then( () => {
-          alert('Signup Success');
-        })
+      let email = this.state.email;
+      let password = this.state.password;
+      this.props.onLogin(email,password).then( () => {
 
+      })
   }
   googleLogin(){
      let promise = new Promise( (resolve,reject) => {
@@ -103,7 +86,7 @@ export class SignupPage extends React.Component {
           })
     })
     promise.then( (user) => {
-      this.props.onRegister(user).then( () => {
+      this.props.onLogin(user).then( () => {
 
       })
     })
@@ -130,7 +113,7 @@ export class SignupPage extends React.Component {
                     notify('Error fetching data: ' + error.toString());
                   } else {
                     console.log(result)
-                    this.props.onRegister(result).then( () => {
+                    this.props.onLogin(result).then( () => {
                       
                     })
                   }
@@ -213,21 +196,7 @@ export class SignupPage extends React.Component {
                       <View style={styles.logo}>
                           <Image style={{width: 100,height:100}} source={require('./../../images/splash-logo.png')}></Image>
                       </View>
-                      <View style={styles.textwrapper}>
-                        <TextInput
-                        autoCapitalize="words"
-                        returnKeyType={"next"}
-                        placeholder={"Name"}
-                        style={styles.textfield}
-                        onChangeText={(text) => this.setState({
-                            name: text
-                        })}
-                        onSubmitEditing={ () => { 
-                           this.refs['email'].focus()
-                        }}  
-                        value={this.state.name}>
-                        </TextInput>
-                      </View>
+                      
                       <View style={styles.textwrapper}>
                         <TextInput
                         ref="email"
@@ -279,12 +248,11 @@ export class SignupPage extends React.Component {
   }
 }
 
-SignupPage.propTypes = {
+LoginPage.propTypes = {
   navigator: React.PropTypes.any.isRequired,
-  googleSignup : React.PropTypes.func.isRequired,
   login_user: React.PropTypes.any.isRequired,
   ui: React.PropTypes.any.isRequired,
-  onRegister: React.PropTypes.any.isRequired
+  onLogin: React.PropTypes.any.isRequired
 }
 
 const styles = StyleSheet.create({
