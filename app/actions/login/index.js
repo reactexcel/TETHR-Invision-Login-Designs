@@ -1,42 +1,49 @@
 import { createAction } from 'redux-actions';
-import { CONFIG } from './../../config/index'
+import { fireAjax} from './../../services/index';
+import * as _ from 'lodash'
 
-export const LOGIN_TODO_REQUEST = "LOGIN_TODO_REQUEST";
-export const LOGIN_TODO_SUCCESS = "LOGIN_TODO_SUCCESS";
-export const LOGIN_TODO_ERROR = "LOGIN_TODO_ERROR";
+export const LOGIN_REQUEST = "LOGIN_REQUEST";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 
-export function loginTodoError(error){
-	return createAction(LOGIN_TODO_ERROR)(error);
+export function loginLoading(show){
+	return createAction(LOGIN_REQUEST)(show);
 }
-export function loginTodoSuccess(data){
-	return createAction(LOGIN_TODO_SUCCESS)(data);
+export function loginSuccess(data){
+	return createAction(LOGIN_SUCCESS)(data);
 }
 
-function loginAsync(){
-	return fetch(CONFIG.api_url + 'v1/customer/login',{
-		method: 'post',
-		headers: new Headers({
-			'APP_ID': CONFIG.app_id
-		}),
-		body: JSON.stringify({
+
+function loginAsync(email,password){
+	return fireAjax('v1/customer/login',{
 			email: email,
 			password : password
 		})
-	})
 }
 
-export function loginTodo(id,text,mark){
+export function login(email,password){
 	return function (dispatch,getState){
-		dispatch(signupLoading(true));
-		return loginAsync().then(
-			(data) => {
-				dispatch(signupLoading(false));
-				dispatch(loginTodoSuccess(data));
-			},
-			(error) => {
-				dispatch(signupLoading(false));
-				dispatch(loginTodoError(error));
-			}
-		);
+		if(_.isEmpty(email)){
+			return new Promise.reject('Email Cannot Be Empty')
+		}
+		if(_.isEmpty(password)){
+			return new Promise.reject('Password Cannot Be Empty')
+		}
+		dispatch(loginLoading(true));
+		return new Promise( (resolve,reject) => {
+			loginAsync(email,password).then(
+				(data) => {
+					console.log(data);
+					dispatch(loginLoading(false));
+					dispatch(loginSuccess(data));
+					resolve(data);
+					
+				},
+				(error) => {
+					console.error(error);
+					dispatch(loginLoading(false));
+					reject(error.message);
+				}
+			);	
+		}) 
 	}
 }

@@ -33,7 +33,7 @@ function mapStateToProps(state,props){
 }
 const mapDispatchToProps = (dispatch) => {   //es6 way
      return {
-      onLogin : (firstname,lastname,email,password) => {
+      onLogin : (email,password) => {
         return dispatch(login_actions.login(email,password))
       }
      }
@@ -42,4 +42,4 @@ const mapDispatchToProps = (dispatch) => {   //es6 way
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SignupContainer)
+)(LoginContainer)

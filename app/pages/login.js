@@ -34,7 +34,7 @@ export class LoginPage extends React.Component {
       }
     this.googleLogin = this.googleLogin.bind(this);
     this.facebookLogin = this.facebookLogin.bind(this);
-    this.onRegister = this.onRegister.bind(this);
+    this.onLogin = this.onLogin.bind(this);
     this._renderGoogle = this._renderGoogle.bind(this);
     this._renderProgress = this._renderProgress.bind(this);
     this._renderFacebook = this._renderFacebook.bind(this);
@@ -43,11 +43,14 @@ export class LoginPage extends React.Component {
   componentWillReceiveProps(props){
     
   }
-  onRegister(){
+  onLogin(){
       let email = this.state.email;
       let password = this.state.password;
-      this.props.onLogin(email,password).then( () => {
-
+      this.props.onLogin(email,password).then( 
+        (data) => {
+         this.props.navigator.replace({id: 'category'})
+        },(error) => {
+         notify(error);
       })
   }
   googleLogin(){
@@ -130,7 +133,7 @@ export class LoginPage extends React.Component {
       );
   }
   _renderProgress(){
-    if(this.props.ui.signup_page.loading){
+    if(this.props.ui.login_page.loading){
       return (
         <View style={styles.container}>
              <ProgressBarAndroid styleAttr="Inverse" />
@@ -142,7 +145,7 @@ export class LoginPage extends React.Component {
   }
   _renderFacebook(){
     var {height, width} = Dimensions.get('window');
-    if(!this.props.ui.signup_page.loading){
+    if(!this.props.ui.login_page.loading){
       return (
         <TouchableOpacity onPress={this.facebookLogin} background={TouchableNativeFeedback.SelectableBackground()}>
           <View style={styles.rounded_blue}>
@@ -158,7 +161,7 @@ export class LoginPage extends React.Component {
   }
   _renderGoogle(){
     var {height, width} = Dimensions.get('window');
-    if(!this.props.ui.signup_page.loading){
+    if(!this.props.ui.login_page.loading){
       return (
         <TouchableOpacity onPress={this.googleLogin} background={TouchableNativeFeedback.SelectableBackground()}>
           <View style={styles.rounded_blue}>
@@ -224,7 +227,7 @@ export class LoginPage extends React.Component {
                             password: text
                         })}
                         onSubmitEditing={ () => { 
-                           this.onRegister()
+                           this.onLogin()
                         }} 
                         value={this.state.password}>
                         </TextInput>
@@ -235,7 +238,7 @@ export class LoginPage extends React.Component {
 
               </View>
               <View style={styles.container_end}>
-                  <TouchableOpacity style={styles.green_background} onPress={this.onRegister} background={TouchableNativeFeedback.SelectableBackground()}>
+                  <TouchableOpacity style={styles.green_background} onPress={this.onLogin} background={TouchableNativeFeedback.SelectableBackground()}>
                     <View >
                       
                         <Icon color="white" style={{alignSelf: 'center'}} name="navigate-next" size={30}></Icon>
