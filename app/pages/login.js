@@ -48,12 +48,13 @@ export class LoginPage extends React.Component {
       let password = this.state.password;
       this.props.onLogin(email,password).then( 
         (data) => {
-         this.props.navigator.replace({id: 'category'})
+         this.props.navigator.replace({id: 'landing'})
         },(error) => {
          notify(error);
       })
   }
   googleLogin(){
+     let self = this;
      let promise = new Promise( (resolve,reject) => {
         GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
               // play services are available. can now configure library
@@ -89,35 +90,45 @@ export class LoginPage extends React.Component {
           })
     })
     promise.then( (user) => {
-      this.props.onLogin(user).then( () => {
-
-      })
-    })
+      console.log(user);
+      let firstname = _.head(_.words(user.name));
+      let lastname = _.last(_.words(user.name))
+      self.props.onSocialLogin(user.email,user.id,'google',firstname,lastname,user.photo).then( () => {
+        self.props.navigator.replace({id: 'landing'})
+      }, (error) => {
+          notify(error);
+        })
+        }, (error) => {
+          notify(error);
+        })
   }
   facebookLogin(){
-      /**
-        this needs to be converted to redux like google login.
-        but not doing it since this is not a live project
-      **/
-      LoginManager.logInWithReadPermissions(['public_profile']).then(
+      let self = this;
+      
+      LoginManager.logInWithReadPermissions(['public_profile','email']).then(
         function(result) {
           if (result.isCancelled) {
             notify('Login cancelled');
           } else {
            
-            
+
 
             // Create a graph request asking for user information with a callback to handle the response.
             const infoRequest = new GraphRequest(
               '/me',
-              null,
-              (error, result) => {
+              { parameters: { fields: { string: 'email,name,first_name,last_name' } } },
+              (error, user) => {
                   if (error) {
                     notify('Error fetching data: ' + error.toString());
+                    console.error(error);
                   } else {
-                    console.log(result)
-                    this.props.onLogin(result).then( () => {
-                      
+                    console.log(user)
+                    let picture = 'http://graph.facebook.com/'+user.id+'/picture?type=large'
+                    self.props.onSocialLogin(user.email,user.id,'facebook',user.first_name,user.last_name,picture).then( () => {
+                      self.props.navigator.replace({id: 'landing'})
+                    }, (error) => {
+                      console.log(error);
+                      notify(error);
                     })
                   }
                 }
@@ -133,15 +144,11 @@ export class LoginPage extends React.Component {
       );
   }
   _renderProgress(){
-    if(this.props.ui.login_page.loading){
+    
       return (
-        <View style={styles.container}>
-             <ProgressBarAndroid styleAttr="Inverse" />
-        </View>
+        <ActivityIndicator style={styles.container} animating={this.props.ui.login_page.loading} size="large" />
       )
-    }else{
-      return null
-    }
+    
   }
   _renderFacebook(){
     var {height, width} = Dimensions.get('window');
@@ -150,7 +157,7 @@ export class LoginPage extends React.Component {
         <TouchableOpacity onPress={this.facebookLogin} background={TouchableNativeFeedback.SelectableBackground()}>
           <View style={styles.rounded_blue}>
             <View style={[styles.align_text,{width: width * .75}]}>
-              <Text style={styles.facebook_text}>SIGN UP VIA FACEBOOK</Text>
+              <Text style={styles.facebook_text}>LOGIN VIA FACEBOOK</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -166,7 +173,7 @@ export class LoginPage extends React.Component {
         <TouchableOpacity onPress={this.googleLogin} background={TouchableNativeFeedback.SelectableBackground()}>
           <View style={styles.rounded_blue}>
             <View style={[styles.align_text_red,{width: width * .75}]}>
-              <Text style={styles.google_text}>SIGN UP VIA GOOGLE</Text>
+              <Text style={styles.google_text}>LOGIN VIA GOOGLE</Text>
             </View>
           </View>
         </TouchableOpacity> 
@@ -189,7 +196,7 @@ export class LoginPage extends React.Component {
                     
                 }}
                 navIconName="arrow-back"
-                title={"Sign Up"}
+                title={"Login"}
                 style={styles.toolbar}
                 titleColor={"#333"}
                 action={[]}>
@@ -235,6 +242,12 @@ export class LoginPage extends React.Component {
                       {this._renderProgress()}
                       {this._renderFacebook()}
                       {this._renderGoogle()}
+
+                      <TouchableOpacity style={{paddingTop: 10}} onPress={ () => {  this.props.navigator.push({id: 'signup'})  } } background={TouchableNativeFeedback.SelectableBackground()}>
+                        <View>
+                          <Text style={{textDecorationLine:'underline'}}>Don't Have An Account Yet? SIGN UP!</Text>
+                        </View>
+                      </TouchableOpacity>
 
               </View>
               <View style={styles.container_end}>

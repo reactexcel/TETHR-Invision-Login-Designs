@@ -1,7 +1,6 @@
+import {category} from './category/index'
+import { combineReducers } from 'redux-immutable'
 
-
-import Immutable from 'immutable';
-
-export function entities(state = Immutable.Map({}),action){
-  return state;
-}
+export default combineReducers({
+  category
+})

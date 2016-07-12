@@ -1,5 +1,5 @@
 
-import {LOGIN_TODO_REQUEST,LOGIN_TODO_SUCCESS,LOGIN_TODO_ERROR} from './../../actions/login/index' 
+import {LOGIN_TODO_REQUEST,LOGIN_TODO_SUCCESS,LOGIN_TODO_ERROR,LOGIN_CHECK_SUCCESS} from './../../actions/login/index' 
 import Immutable from 'immutable';
 
 export function login(state = Immutable.fromJS({
@@ -13,6 +13,8 @@ export function login(state = Immutable.fromJS({
      return state.set('login_data',action.payload).set('login_request',false)
   }else if(action.type === LOGIN_TODO_ERROR){
      return state.set('login_error',action.error).set('login_request',false)
+  }else if(action.type === LOGIN_CHECK_SUCCESS){
+     return state.set('login_data',Immutable.fromJS(action.payload))
   }
   return state;
 }

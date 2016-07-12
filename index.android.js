@@ -15,16 +15,20 @@ import {
   AsyncStorage
 } from 'react-native';
 
+require('react-native');
+// delete GLOBAL.XMLHttpRequest;
+
 import PushNotification from 'react-native-push-notification'
 
 
-import {StartPage} from './app/pages/start';
+import StartContainer from './app/containers/start';
 import {HomePage} from './app/pages/home';
-import {TourPage} from './app/pages/tour';
+import TourContainer from './app/containers/tour';
 import SignupContainer from './app/containers/signup';
 import {ProductPage} from './app/pages/product'
-import {CategoryPage} from './app/pages/category'
+import LandingContainer from './app/containers/landing'
 import LoginContainer from './app/containers/login'
+import CategoryContainer from './app/containers/category'
 
 import BaseStyle from './app/styles/base'
 
@@ -53,7 +57,7 @@ class tethr extends Component {
     
     this.state = {
       initRoute : {
-        id: 'login'
+        id: 'start'
       }
     }
     
@@ -99,7 +103,7 @@ class tethr extends Component {
     _navigator = navigator;
     if(route.id === 'start'){
       return (
-        <StartPage baseStyle={BaseStyle} navigator={navigator} />
+        <StartContainer baseStyle={BaseStyle} navigator={navigator} />
       )
     }else if(route.id === 'home'){
       return (
@@ -107,7 +111,7 @@ class tethr extends Component {
       )
     }else if(route.id === 'tour'){
       return (
-        <TourPage baseStyle={BaseStyle} navigator={navigator} />
+        <TourContainer baseStyle={BaseStyle} navigator={navigator} />
       )
     }else if(route.id === 'signup'){
       return (
@@ -117,13 +121,17 @@ class tethr extends Component {
       return (
         <ProductPage baseStyle={BaseStyle} navigator={navigator} />
       )
-    }else if(route.id === 'category'){
+    }else if(route.id === 'landing'){
       return (
-        <CategoryPage baseStyle={BaseStyle} navigator={navigator} />
+        <LandingContainer baseStyle={BaseStyle} navigator={navigator} />
       )
     }else if(route.id === 'login'){
       return (
         <LoginContainer baseStyle={BaseStyle} navigator={navigator} />
+      )
+    }else if(route.id === 'category'){
+      return (
+        <CategoryContainer navigator={navigator} {...route.passProps} />
       )
     }
   }
@@ -132,13 +140,7 @@ class tethr extends Component {
      <Provider store={store}>
       <Navigator
         initialRoute={this.state.initRoute}
-        configureScene={ (route, routeStack) => {
-          if(route.id === 'product'){
-            return false;
-          }else{
-            return Navigator.SceneConfigs.HorizontalSwipeJump
-          }
-        } }
+      
         renderScene={this._renderScene}>
       </Navigator>
     </Provider>

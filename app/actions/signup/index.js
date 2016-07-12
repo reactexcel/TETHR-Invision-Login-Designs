@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { CONFIG } from './../../config/index'
+import { fireAjax} from './../../services/index';
 
 export const SIGNUP_PAGE_AJAX = "SIGNUP_AJAX";
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
@@ -19,27 +19,18 @@ export function signupError(error){
 
 
 function signupAjax(firstname,lastname,email,password){
-	return fetch(CONFIG.api_url + 'v1/customer/register',{
-		method: 'post',
-		headers: new Headers({
-			'APP_ID': CONFIG.app_id
-		}),
-		body: JSON.stringify({
+	return fireAjax('v1/customer/register',{
 			email: email,
 			firstname: firstname,
 			lastname : lastname,
 			password : password
-		})
 	})
 }
 
 export function signup(firstname,lastname,email,password){
 	return function (dispatch,getState){
 		if(_.isEmpty(firstname)){
-			return new Promise( (resolve,reject) => {
-				dispatch(signupError(new Error('FirstName Cannot Be Empty')));
-				return Promise.resolve()
-			})
+			return Promise.reject('FirstName Cannot Be Empty')
 		}
 		// if(_.isEmpty(lastname) ){
 		// 	return new Promise( (resolve,reject) => {
@@ -48,32 +39,30 @@ export function signup(firstname,lastname,email,password){
 		// 	})
 		// } 
 		if(_.isEmpty(email) ) {
-			return new Promise( (resolve,reject) => {
-				dispatch(signupError(new Error('Email Cannot Be Empty')));
-				return Promise.resolve()
-			})
+			return Promise.reject('Email Cannot Be Empty')
 		}
 		if(_.isEmpty(password)) {
-			return new Promise( (resolve,reject) => {
-				dispatch(signupError(new Error('Password Cannot Be Empty')));
-				return Promise.resolve()
-			})
+			return Promise.reject('Password Cannot Be Empty')
 		}
 		dispatch(signupLoading(true));
-		return signupAjax(firstname,lastname,email,password).then(
-			(data) => {
-				data.json().then( (data) => {
-					console.log(data);
+		return new Promise( (resolve,reject) => {
+			signupAjax(firstname,lastname,email,password).then(
+				(data) => {
+					data.json().then( (data) => {
+						console.log(data);
+						dispatch(signupLoading(false));
+						dispatch(signupSuccess(data));
+						resolve(data);
+					})	
+					
+				},
+				(error) => {
+					console.error(error);
 					dispatch(signupLoading(false));
-					dispatch(signupSuccess(data));
-				})	
-				
-			},
-			(error) => {
-				console.error(error);
-				dispatch(signupLoading(false));
-				dispatch(signupError(error));
-			}
-		);
+					dispatch(signupError(error));
+					reject(error.message);
+				}
+			);
+		})
 	}
 }

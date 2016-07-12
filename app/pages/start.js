@@ -21,10 +21,10 @@ export class StartPage extends React.Component {
 	    var {height, width} = Dimensions.get('window');
 	    return (
 	      <View style={styles.container}>
-	        <TouchableNativeFeedback onPress={ () => {  this.props.navigator.push({id: 'signup'}) }} background={TouchableNativeFeedback.SelectableBackground()}>
+	        <TouchableNativeFeedback onPress={ () => {  this.props.navigator.push({id: 'login'}) }} background={TouchableNativeFeedback.SelectableBackground()}>
 	          <View style={styles.signup_feedback}>
 	            <Text style={styles.signup}>
-	              SIGN UP
+	              LOG IN
 	            </Text>
 	          </View>
 	        </TouchableNativeFeedback>
@@ -34,7 +34,7 @@ export class StartPage extends React.Component {
 	        <View style={styles.next,{  height: height*.2  }}>
 	          <TouchableNativeFeedback onPress={ () => {  this.props.navigator.push({id: 'home'})  }} background={TouchableNativeFeedback.SelectableBackground()}>
 	            <View style={{padding: 10}}>
-	              <Icon iconStyle={{textAlign: 'center'}} onPress={ () => {}} color={'#333'} backgroundColor={'#f3f3f3'} size={30} name="arrow-forward"></Icon>
+	              <Icon iconStyle={{textAlign: 'center'}} onPress={ () => {   this.props.navigator.push({id: 'tour'})  }} color={'#333'} backgroundColor={'#f3f3f3'} size={30} name="arrow-forward"></Icon>
 	            </View>
 	          </TouchableNativeFeedback>
 	        </View>

@@ -42,28 +42,25 @@ export class SignupPage extends React.Component {
     
 	}
   componentWillReceiveProps(props){
-    if(props.login_user && props.login_user.login_data && props.login_user.login_data.name){
-      //props.navigator.resetTo({id: 'product'})
-    }
-    if(props.ui.signup_page.signup.error){
-      notify(props.ui.signup_page.signup.error)
-      this.state = {
-        name : '',
-        email: '',
-        password: '',
-        focus_email: false,
-        focus_password: false
-      }
-    }
+    
   }
   onRegister(){
         let name = this.state.name;
         let email = this.state.email;
         let password = this.state.password;
         let firstname = _.head(_.words(name));
-        let lastname = _.tail(_.words(name))
+        let lastname = _.last(_.words(name))
         this.props.onRegister(firstname,lastname,email,password).then( () => {
-          alert('Signup Success');
+            this.props.navigator.replace({id: 'landing'})
+            this.state = {
+              name : '',
+              email: '',
+              password: '',
+              focus_email: false,
+              focus_password: false
+            }
+        }, (error) => {
+          notify(error)
         })
 
   }

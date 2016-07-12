@@ -17,6 +17,7 @@ class LoginContainer extends React.Component {
           <LoginPage 
             navigator={this.props.navigator} 
             onLogin={this.props.onLogin} 
+            onSocialLogin={this.props.onSocialLogin}
             login_user={this.props.login}
             ui={this.props.ui} />
       )
@@ -35,6 +36,9 @@ const mapDispatchToProps = (dispatch) => {   //es6 way
      return {
       onLogin : (email,password) => {
         return dispatch(login_actions.login(email,password))
+      },
+      onSocialLogin : (email,social_id,social_type,firstname,lastname,picture) => {
+        return dispatch(login_actions.socialLogin(email,social_id,social_type,firstname,lastname,picture))
       }
      }
 }
